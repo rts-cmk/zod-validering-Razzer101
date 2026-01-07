@@ -18,7 +18,9 @@ export default function RegistrationForm(){
 
         if(result.success){
             setErrors({})
-            alert("Du er nu oprettet som bruger")
+            alert(
+                `Tak for din registrering`
+            )
         } else {
             const readableErrors = z.treeifyError(result.error)
             console.log(readableErrors.properties)

@@ -14,7 +14,8 @@ const signUpSchema = z.object({
     confirmPassword: z.string(),
     birthday: z.coerce.date()
         .max(new Date(`${new Date().getFullYear() - 17}-${String(new Date().getMonth() + 1).padStart(2, "0")}-${String(new Date().getDate()).padStart(2, "0")}`)),
-    phone: z.coerce.number("Dit telefonnummer må kun indholde tal").min(10000000, "Dit telefonnummer skal være mindst 8 cifre").optional(),
+    phone: z.coerce.string("Dit telefonnummer må kun indholde tal")
+        .refine(n => n === "" || n.length === 8, "Dit telefonnummer må kun have 8 cifre"),
     description: z.string().max(200)
 }).refine(
     schema => schema.password === schema.confirmPassword,
