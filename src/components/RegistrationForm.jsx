@@ -12,6 +12,7 @@ export default function RegistrationForm(){
         const form = event.target
         const formdata = new FormData(form)
         const formDataObject = Object.fromEntries(formdata.entries())
+        console.log(formDataObject)
 
         const result = registrationSchema.safeParse(formDataObject)
 
@@ -20,7 +21,7 @@ export default function RegistrationForm(){
             alert("Du er nu oprettet som bruger")
         } else {
             const readableErrors = z.treeifyError(result.error)
-            // console.log(readableErrors.properties)
+            console.log(readableErrors.properties)
             setErrors(readableErrors.properties)
         }
     }
@@ -46,6 +47,17 @@ export default function RegistrationForm(){
                     <ul className="sign-up-form__error-list">
                         {
                             errors.lastName?.errors.map(
+                                (message, index) => <li key={index}>{message}</li>
+                            )
+                        }
+                    </ul>
+                </label>
+                <label htmlFor="username" className="sign-up-form__label">
+                    <span className="sign-up-form__text">Brugernavn</span>
+                    <input id="username" name="username" className="sign-up-form__input" type="text" autoComplete="given-name"/>
+                    <ul className="sign-up-form__error-list">
+                        {
+                            errors.username?.errors.map(
                                 (message, index) => <li key={index}>{message}</li>
                             )
                         }
@@ -101,6 +113,17 @@ export default function RegistrationForm(){
                     <ul className="sign-up-form__error-list">
                         {
                             errors.phone?.errors.map(
+                                (message, index) => <li key={index}>{message}</li>
+                            )
+                        }
+                    </ul>
+                </label>
+                <label htmlFor="description" className="sign-up-form__label">
+                    <span className="sign-up-form__text">Profil beskrivelse</span>
+                    <textarea id="description" name="description" className="sign-up-form__textarea"/>
+                    <ul className="sign-up-form__error-list">
+                        {
+                            errors.description?.errors.map(
                                 (message, index) => <li key={index}>{message}</li>
                             )
                         }
