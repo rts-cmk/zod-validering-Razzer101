@@ -1,10 +1,98 @@
 import z from "zod"
 import registrationSchema from "../schemas/registrationSchema"
 import "./RegistrationForm.sass"
-import { useState } from "react"
+import { use, useEffect, useState } from "react"
 
 export default function RegistrationForm(){
-    const [errors, setErrors] = useState({})
+    const [firstNameError, setFirstNameError] = useState({})
+    const [lastNameError, setLastNameError] = useState({})
+    const [usernameError, setUsernameError] = useState({})
+    const [emailError, setEmailError] = useState({})
+    const [passwordError, setPasswordError] = useState({})
+    const [confirmPasswordError, setConfirmPasswordError] = useState({})
+    const [birthdayError, setBirthdayError] = useState({})
+    const [phoneError, setPhoneError] = useState({})
+    const [descriptionError, setDescriptionError] = useState({})
+
+    const firstNameHandler = (event) => {
+        const result = registrationSchema.safeParse({firstName: `${event.target.value}`})
+        if(result.success){
+            setFirstNameError({})
+        } else {
+            const readableErrors = z.treeifyError(result.error)
+            setFirstNameError(readableErrors.properties)
+        }
+    }
+
+    const lastNameHandler = (event) => {
+        const result = registrationSchema.safeParse({lastName: `${event.target.value}`})
+        if(result.success){
+            setLastNameError({})
+        } else {
+            const readableErrors = z.treeifyError(result.error)
+            setLastNameError(readableErrors.properties)
+        }
+    }
+
+    const usernameHandler = (event) => {
+        const result = registrationSchema.safeParse({username: `${event.target.value}`})
+        if(result.success){
+            setUsernameError({})
+        } else {
+            const readableErrors = z.treeifyError(result.error)
+            setUsernameError(readableErrors.properties)
+        }
+    }
+
+    const emailHandler = (event) => {
+        const result = registrationSchema.safeParse({email: `${event.target.value}`})
+        if(result.success){
+            setEmailError({})
+        } else {
+            const readableErrors = z.treeifyError(result.error)
+            setEmailError(readableErrors.properties)
+        }
+    }
+
+    const passwordHandler = (event) => {
+        const result = registrationSchema.safeParse({password: `${event.target.value}`})
+        if(result.success){
+            setPasswordError({})
+        } else {
+            const readableErrors = z.treeifyError(result.error)
+            setPasswordError(readableErrors.properties)
+        }
+    }
+
+    const birthdayHandler = (event) => {
+        const result = registrationSchema.safeParse({birthday: `${event.target.value}`})
+        if(result.success){
+            setBirthdayError({})
+        } else {
+            const readableErrors = z.treeifyError(result.error)
+            setBirthdayError(readableErrors.properties)
+        }
+    }
+
+    const phoneHandler = (event) => {
+        const result = registrationSchema.safeParse({phone: `${event.target.value}`})
+        if(result.success){
+            setPhoneError({})
+        } else {
+            const readableErrors = z.treeifyError(result.error)
+            setPhoneError(readableErrors.properties)
+        }
+    }
+
+    const descriptionHandler = (event) => {
+        const result = registrationSchema.safeParse({description: `${event.target.value}`})
+        if(result.success){
+            setDescriptionError({})
+        } else {
+            const readableErrors = z.treeifyError(result.error)
+            setDescriptionError(readableErrors.properties)
+        }
+    }
 
     const submithandler = (event) => {
         event.preventDefault()
@@ -12,19 +100,26 @@ export default function RegistrationForm(){
         const form = event.target
         const formdata = new FormData(form)
         const formDataObject = Object.fromEntries(formdata.entries())
-        console.log(formDataObject)
 
         const result = registrationSchema.safeParse(formDataObject)
 
         if(result.success){
-            setErrors({})
+            setConfirmPasswordError({})
             alert(
                 `Tak for din registrering`
             )
+            form.reset()
         } else {
             const readableErrors = z.treeifyError(result.error)
-            console.log(readableErrors.properties)
-            setErrors(readableErrors.properties)
+            setFirstNameError(readableErrors.properties)
+            setLastNameError(readableErrors.properties)
+            setUsernameError(readableErrors.properties)
+            setEmailError(readableErrors.properties)
+            setPasswordError(readableErrors.properties)
+            setConfirmPasswordError(readableErrors.properties)
+            setBirthdayError(readableErrors.properties)
+            setPhoneError(readableErrors.properties)
+            setDescriptionError(readableErrors.properties)
         }
     }
 
@@ -34,10 +129,10 @@ export default function RegistrationForm(){
                 <legend className="sign-up-form__legend">Lav en profil</legend>
                 <label htmlFor="first-name" className="sign-up-form__label">
                     <span className="sign-up-form__text">Fornavn</span>
-                    <input id="first-name" name="firstName" className="sign-up-form__input" type="text" autoComplete="given-name"/>
+                    <input onChange={firstNameHandler} id="first-name" name="firstName" className="sign-up-form__input" type="text" autoComplete="given-name"/>
                     <ul className="sign-up-form__error-list">
                         {
-                            errors.firstName?.errors.map(
+                            firstNameError.firstName?.errors.map(
                                 (message, index) => <li key={index}>{message}</li>
                             )
                         }
@@ -45,10 +140,10 @@ export default function RegistrationForm(){
                 </label>
                 <label htmlFor="last-name" className="sign-up-form__label">
                     <span className="sign-up-form__text">Efternavn</span>
-                    <input id="last-name" name="lastName" className="sign-up-form__input" type="text" autoComplete="family-name"/>
+                    <input onChange={lastNameHandler} id="last-name" name="lastName" className="sign-up-form__input" type="text" autoComplete="family-name"/>
                     <ul className="sign-up-form__error-list">
                         {
-                            errors.lastName?.errors.map(
+                            lastNameError.lastName?.errors.map(
                                 (message, index) => <li key={index}>{message}</li>
                             )
                         }
@@ -56,10 +151,10 @@ export default function RegistrationForm(){
                 </label>
                 <label htmlFor="username" className="sign-up-form__label">
                     <span className="sign-up-form__text">Brugernavn</span>
-                    <input id="username" name="username" className="sign-up-form__input" type="text" autoComplete="given-name"/>
+                    <input onChange={usernameHandler} id="username" name="username" className="sign-up-form__input" type="text" autoComplete="given-name"/>
                     <ul className="sign-up-form__error-list">
                         {
-                            errors.username?.errors.map(
+                            usernameError.username?.errors.map(
                                 (message, index) => <li key={index}>{message}</li>
                             )
                         }
@@ -67,10 +162,10 @@ export default function RegistrationForm(){
                 </label>
                 <label htmlFor="email" className="sign-up-form__label">
                     <span className="sign-up-form__text">Email</span>
-                    <input id="email" name="email" className="sign-up-form__input" type="email" autoComplete="email"/>
+                    <input onChange={emailHandler} id="email" name="email" className="sign-up-form__input" type="email" autoComplete="email"/>
                     <ul className="sign-up-form__error-list">
                         {
-                            errors.email?.errors.map(
+                            emailError.email?.errors.map(
                                 (message, index) => <li key={index}>{message}</li>
                             )
                         }
@@ -78,10 +173,10 @@ export default function RegistrationForm(){
                 </label>
                 <label htmlFor="password" className="sign-up-form__label">
                     <span className="sign-up-form__text">Adgangskode</span>
-                    <input id="password" name="password" className="sign-up-form__input" type="password" autoComplete="new-password"/>
+                    <input onChange={passwordHandler} id="password" name="password" className="sign-up-form__input" type="password" autoComplete="new-password"/>
                     <ul className="sign-up-form__error-list">
                         {
-                            errors.password?.errors.map(
+                            passwordError.password?.errors.map(
                                 (message, index) => <li key={index}>{message}</li>
                             )
                         }
@@ -92,7 +187,7 @@ export default function RegistrationForm(){
                     <input id="confirm-password" name="confirmPassword" className="sign-up-form__input" type="password" autoComplete="new-password"/>
                     <ul className="sign-up-form__error-list">
                         {
-                            errors.confirmPassword?.errors.map(
+                            confirmPasswordError.confirmPassword?.errors.map(
                                 (message, index) => <li key={index}>{message}</li>
                             )
                         }
@@ -100,10 +195,10 @@ export default function RegistrationForm(){
                 </label>
                 <label htmlFor="birthday" className="sign-up-form__label">
                     <span className="sign-up-form__text">Fødselsdag</span>
-                    <input id="birthday" name="birthday" className="sign-up-form__input" type="date" autoComplete="bday-day"/>
+                    <input onChange={birthdayHandler} id="birthday" name="birthday" className="sign-up-form__input" type="date" autoComplete="bday-day"/>
                     <ul className="sign-up-form__error-list">
                         {
-                            errors.birthday?.errors.map(
+                            birthdayError.birthday?.errors.map(
                                 (message, index) => <li key={index}>{message}</li>
                             )
                         }
@@ -111,10 +206,10 @@ export default function RegistrationForm(){
                 </label>
                 <label htmlFor="phone" className="sign-up-form__label">
                     <span className="sign-up-form__text">Telefon</span>
-                    <input id="phone" name="phone" className="sign-up-form__input" type="tel" autoComplete="tel"/>
+                    <input onChange={phoneHandler} id="phone" name="phone" className="sign-up-form__input" type="tel" autoComplete="tel"/>
                     <ul className="sign-up-form__error-list">
                         {
-                            errors.phone?.errors.map(
+                            phoneError.phone?.errors.map(
                                 (message, index) => <li key={index}>{message}</li>
                             )
                         }
@@ -122,10 +217,10 @@ export default function RegistrationForm(){
                 </label>
                 <label htmlFor="description" className="sign-up-form__label">
                     <span className="sign-up-form__text">Profil beskrivelse</span>
-                    <textarea id="description" name="description" className="sign-up-form__textarea"/>
+                    <textarea onChange={descriptionHandler} id="description" name="description" className="sign-up-form__textarea"/>
                     <ul className="sign-up-form__error-list">
                         {
-                            errors.description?.errors.map(
+                            descriptionError.description?.errors.map(
                                 (message, index) => <li key={index}>{message}</li>
                             )
                         }
